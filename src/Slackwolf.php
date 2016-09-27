@@ -9,6 +9,7 @@ use Slackwolf\Game\Command\EndCommand;
 use Slackwolf\Game\Command\GuardCommand;
 use Slackwolf\Game\Command\HealCommand;
 use Slackwolf\Game\Command\HelpCommand;
+use Slackwolf\Game\Command\ObserveCommand;
 use Slackwolf\Game\Command\KillCommand;
 use Slackwolf\Game\Command\PoisonCommand;
 use Slackwolf\Game\Command\RemindCommand;
@@ -70,6 +71,7 @@ class Slackwolf
             'start'     => StartCommand::class,
             'end'       => EndCommand::class,
             'see'       => SeeCommand::class,
+            'observe'   => ObserveCommand::class,
             'vote'      => VoteCommand::class,
             'kill'      => KillCommand::class,
             'poison'    => PoisonCommand::class,

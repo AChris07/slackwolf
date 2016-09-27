@@ -5,6 +5,7 @@ use Slackwolf\Game\Roles\Bodyguard;
 use Slackwolf\Game\Roles\Hunter;
 use Slackwolf\Game\Roles\Lycan;
 use Slackwolf\Game\Roles\Seer;
+use Slackwolf\Game\Roles\Sorceress;
 use Slackwolf\Game\Roles\Tanner;
 use Slackwolf\Game\Roles\Witch;
 use Slackwolf\Game\Roles\WolfMan;
@@ -69,6 +70,7 @@ class Role
     const BODYGUARD = "Bodyguard";
     const HUNTER = "Hunter";
     const LYCAN = "Lycan";
+    const SORCERESS = "Sorceress";
     const TANNER = "Tanner";
     const WITCH = "Witch";
     const WOLFMAN = "Wolf Man";
@@ -80,6 +82,7 @@ class Role
             new Hunter(),
             new Lycan(),
             new Seer(),
+            new Sorceress(),
             new Tanner(),
             new Witch(),
             new WolfMan()

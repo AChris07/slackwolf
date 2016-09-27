@@ -10,6 +10,7 @@ use Slackwolf\Game\Roles\Beholder;
 use Slackwolf\Game\Roles\Bodyguard;
 use Slackwolf\Game\Roles\Hunter;
 use Slackwolf\Game\Roles\Seer;
+use Slackwolf\Game\Roles\Sorceress;
 use Slackwolf\Game\Roles\Werewolf;
 use Slackwolf\Game\Roles\Witch;
 use Slackwolf\Game\Roles\WolfMan;
@@ -102,6 +103,12 @@ class Classic implements RoleStrategyInterface
                 $optionalRoles[Role::TANNER] = 1;
                 $possibleOptionalRoles[] = new Tanner();
                 $optionalRoleListMsg .= (strlen($optionalRoleListMsg) > 0 ? ", " : "")."Tanner";
+            }
+
+            if ($optionsManager->getOptionValue(OptionName::role_sorceress)){
+                $optionalRoles[Role::SORCERESS] = 1;
+                $possibleOptionalRoles[] = new Sorceress();
+                $optionalRoleListMsg .= (strlen($optionalRoleListMsg) > 0 ? ", " : "")."Sorceress";
             }
         }
 

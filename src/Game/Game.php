@@ -32,6 +32,7 @@ class Game
     public $nightEnded;
     public $hunterNeedsToShoot;
     public $seerSeen;
+    public $sorceressObserved;
     public $wolvesVoted;
     public $witchHealed;
     public $witchPoisoned;
@@ -439,6 +440,7 @@ class Game
         $this->state = $state;
         $this->clearVotes();
         $this->seerSeen = false;
+        $this->sorceressObserved = false;
         $this->wolvesVoted = false;
         $this->witchHealed = false;
         $this->witchPoisoned = false;
@@ -461,6 +463,17 @@ class Game
      */
     public function setNightEnded($val) {
         $this->nightEnded = $val;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasSorceressObserved() {
+        return $this->sorceressObserved;
+    }
+
+    public function setSorceressObserved($observed) {
+        $this->sorceressObserved = $observed;
     }
 
     /**

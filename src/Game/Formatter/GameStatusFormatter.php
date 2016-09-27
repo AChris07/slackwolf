@@ -21,7 +21,7 @@ class GameStatusFormatter
         $msg = ":memo: Game Status\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n";
 
         if ($game->hunterNeedsToShoot) {
-            $msg .= "_...waiting on the_ :bow_and_arrow: Hunter";
+            $msg .= "_...waiting on the_ :bow_and_arrow: *Hunter*";
             $msg .= "\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n";
             return $msg;
         }
@@ -40,11 +40,16 @@ class GameStatusFormatter
                 $msg .= ":moon:  The night lingers on ... \r\n \r\n";
 
                 $numSeer = $game->getNumRole(Role::SEER);
+                $numSorceress = $game->getNumRole(Role::SORCERESS);
                 $numBodyguard = $game->getNumRole(Role::BODYGUARD);
                 $numWitch = $game->getNumRole(Role::WITCH);
 
                 if ($numSeer > 0 && !$game->seerSeen) {
                     $msg .= "_...waiting on the_ :crystal_ball: *Seer*\r\n";
+                }
+
+                if ($numSorceress > 0 && !$game->hasSorceressObserved()) {
+                    $msg .= "_...waiting on the_ :sparkles: *Sorceress*\r\n";
                 }
 
                 if ($game->state == GameState::NIGHT) {

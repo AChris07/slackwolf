@@ -190,6 +190,11 @@ class GameManager
                 return;
             }
 
+            $numSorceress = $game->getNumRole(Role::SORCERESS);
+            if ($numSorceress && !$game->hasSorceressObserved()) {
+                return;
+            }
+
             $this->onNightEnd($game);
 
             if ($game->hunterNeedsToShoot) {
@@ -459,6 +464,10 @@ class GameManager
                         $client->send("Seer, select a player by saying !see #channel @username.\r\nDO NOT DISCUSS WHAT YOU SEE DURING THE NIGHT, ONLY DISCUSS DURING THE DAY IF YOU ARE NOT DEAD!", $dmc);
                     }
 
+                    if ($player->role->isRole(Role::SORCERESS)) {
+                        $client->send("Sorceress, select a player by saying !observe #channel @username.\r\nDO NOT DISCUSS WHAT YOU SEE DURING THE NIGHT, ONLY DISCUSS DURING THE DAY IF YOU ARE NOT DEAD!", $dmc);
+                    }
+
                     if ($player->role->isRole(Role::BEHOLDER)) {
                         $seers = $game->getPlayersOfRole(Role::SEER);
                         $seers = PlayerListFormatter::format($seers);
@@ -475,15 +484,35 @@ class GameManager
         $msg .= "Players: {$playerList}\r\n";
         $msg .= "Possible Roles: {$game->getRoleStrategy()->getRoleListMsg()}\r\n\r\n";
 
-        if ($this->optionsManager->getOptionValue(OptionName::role_seer)) {
+        if ($this->startingRoles()) {
             $msg .= ":moon: :rain_cloud: The rain comes down in torrents as the village sleeps, unaware of the horror the lurks outside in the wet. It is the middle of the night.";
-            $msg .= " The game will begin when the Seer chooses someone.";
+            $msg .= " The game will begin when {$this->startingRoles()} are set.";
         }
         $this->sendMessageToChannel($game, $msg);
 
-        if (!$this->optionsManager->getOptionValue(OptionName::role_seer)) {
+        if (!$this->startingRoles()) {
             $this->changeGameState($game->getId(), GameState::NIGHT);
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function startingRoles() {
+        $startingRoles = [];
+
+        if ($this->optionsManager->getOptionValue(OptionName::role_seer)) {
+            array_push($startingRoles, 'the Seer');
+        }
+
+        if ($this->optionsManager->getOptionValue(OptionName::role_sorceress)) {
+            array_push($startingRoles, 'the Sorceress');
+        }
+
+        $lastRoles  = array_slice($startingRoles, -1);
+        $firstRoles = implode(', ', array_slice($startingRoles, 0, -1));
+        $both = array_filter(array_merge(array($firstRoles), $lastRoles), 'strlen');
+        return implode(' and ', $both);
     }
 
     /**
@@ -538,6 +567,18 @@ class GameManager
             $this->client->getDMByUserId($seer->getId())
                  ->then(function (DirectMessageChannel $channel) use ($client,$seerMsg) {
                      $client->send($seerMsg, $channel);
+                 });
+        }
+
+        $sorceressMsg = ":sparkles: Sorceress, select a player by saying !observe #channel @username.";
+
+        $sorceresses = $game->getPlayersOfRole(Role::SORCERESS);
+
+        foreach ($sorceresses as $sorceress)
+        {
+            $this->client->getDMByUserId($sorceress->getId())
+                 ->then(function (DirectMessageChannel $channel) use ($client,$sorceressMsg) {
+                     $client->send($sorceressMsg, $channel);
                  });
         }
 

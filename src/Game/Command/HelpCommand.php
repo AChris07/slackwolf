@@ -65,6 +65,9 @@ class HelpCommand extends Command
         $help_msg .= "\r\n*Hunter Commands*\r\n----------------------\r\n";
         $help_msg .= "`!shoot @user1` - Hunter only. The hunter can shoot and kill another player if they are killed during day or night.\r\n";
 
+        $help_msg .= "\r\n*Sorceress Commands*\r\n----------------------\r\n";
+        $help_msg .= "`!observe #channel @user1` - Sorceress only. The sorceress can observe a player to determine if he's the seer.\r\n";
+
         $this->client->getDMByUserId($this->userId)->then(function(DirectMessageChannel $dm) use ($client, $help_msg) {
             $client->send($help_msg, $dm);
         });
